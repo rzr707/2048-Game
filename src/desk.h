@@ -1,15 +1,3 @@
-/**
-  void init(void)                - первичная инициализация массива ячеек
-  bool upPressed()               - вызывается при нажатии клавиши "вниз"
-  bool upMove()                  - при нажатии сдвигает ячейки
-  bool upMerge()                 - сливает ячейки
-  void addScore(uint score)      - добавляет очки
-  void setScore(uint score)      - устанавливает очки
-  void moveTile(Move m, Cell& c) - двигает ячейки (анимация) p.s. не используется (см. метод в cell.h)
-  void slotMoveTile(Move m)      - двигает ячейки (анимация)
-  void slotNewGame()             - сбрасывает очки и начинает игру заново
-  void slotExit()                - закрывает приложение
-*/
 #ifndef DESK
 #define DESK
 
