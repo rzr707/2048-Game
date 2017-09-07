@@ -1,11 +1,9 @@
 <RCC>
-    <qresource prefix="/sounds">
+    <qresource prefix="/">
+        <file>res/icons/2048_icon.ico</file>
+        <file>res/icons/icon.rc</file>
         <file>res/sound/lose.wav</file>
         <file>res/sound/snd1.wav</file>
         <file>res/sound/win.wav</file>
-    </qresource>
-    <qresource prefix="/icon">
-        <file>res/icons/2048_icon.ico</file>
-        <file>res/icons/icon.rc</file>
     </qresource>
 </RCC>

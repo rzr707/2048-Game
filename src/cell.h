@@ -1,6 +1,3 @@
-/**
-  void moveCell(Move m) - двигает ячейку (анимация, используется)
-*/
 #ifndef CELL
 #define CELL
 
@@ -20,12 +17,16 @@
 
 enum Move { LEFT, RIGHT, DOWN, UP };
 
+/**
+ * @brief The Cell class
+ * The mimimum component of gaming desk.
+ */
 class Cell : public QWidget {
     Q_OBJECT
 private:
     QLabel*             m_plbl;
     uint                m_nNumber;
-    bool                m_bIsEmpty;  // показатель, если на циферблате ноль
+    bool                m_bIsEmpty;  // if cell is zero-filled
     QPropertyAnimation* m_pan;
 
 
@@ -83,7 +84,7 @@ protected:
         p.end();
     }
 
-    /* Для изменения размера шрифта при изменении размера окна */
+    /* Font size will be changed if window is resized */
     virtual void resizeEvent(QResizeEvent*) {
         QFont font = this->font();
         if(getNumber() < 1000)
@@ -93,12 +94,12 @@ protected:
         setFont(font);
     }
 
-
-    /*
-     * Конструктор должен создавать ячейку с нулём, а уже в desk.h в начале рандомно появляются
-     * две ненулевые ячейки с 2 или 4
-    */
 public:
+    /**
+     * @brief Cell
+     * @param pwgt - parent widget
+     * Constructor creates zero-filled cell
+     */
     Cell(QWidget* pwgt = 0) : QWidget(pwgt), m_bIsEmpty(true) {
         m_nNumber = (rand() % 2);
         m_plbl = new QLabel("<font size = 25>" + QString::number(m_nNumber) + "</font>");
@@ -121,6 +122,11 @@ public:
         }
     }
 
+    /**
+     * @brief moveCell
+     * In this method cell move animation realised.
+     * @param m - side to move
+     */
     void moveCell(Move m) {
         m_pan->setDuration(100);
         m_pan->setEasingCurve(QEasingCurve::SineCurve); // Animation

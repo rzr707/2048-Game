@@ -37,9 +37,10 @@ public:
         m_pHeadLabel  = new QLabel("<center>What a shame! You lose!<center>");
         m_pHeadLabel->setMargin(0);
 
-        m_pBodyLabel = new QLabel("However, you have reached the highest score! (" +
-                             QString::number(score) + " points). Want to start again?"
-                             );
+        m_pBodyLabel = new QLabel("However, you have reached " +
+                                  QString::number(score) +
+                                  " points). Want to start again?"
+                                  );
 
         m_pPlayerName = new QLineEdit(this);
         m_pPlayerName->setAlignment(Qt::AlignHCenter);

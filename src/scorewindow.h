@@ -7,6 +7,12 @@
 #include "recordlabel.h"
 #include "headerlabel.h"
 
+/**
+ * @brief The ScoreWindow class
+ * Creates window with game scores
+ * (descending key/value pair) and
+ *  writes new score to .xml file
+ */
 class ScoreWindow : public QWidget {
     Q_OBJECT
 
@@ -26,6 +32,7 @@ public:
         : QWidget(parent)
         , pscrollArea(new QScrollArea(this)) {
 
+        /* Proxy widget is needed to create scrollable area with players */
         QWidget* proxyWidget = new QWidget(this);
         xmlFilePath = xml.fileName();
         addRecord(player, record);
@@ -39,7 +46,7 @@ public:
             }
 
             QString errorMsg;
-            if(!doc.setContent(&xml, nullptr, &errorMsg)) {
+            if(!doc.setContent(&xml, 0, &errorMsg)) {
                 qDebug() << "Error parsing xml: " << errorMsg;
                 throw std::runtime_error(std::string("XML Parsing error occured."));
             }
@@ -115,7 +122,6 @@ public:
         setLayout(pMainLayout);
 
     }
-
 
     void traverseNode(const QDomNode& node, QMultiMap<int, QString>& records) {
         QDomNode domNode = node.firstChild();

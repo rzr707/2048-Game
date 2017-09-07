@@ -21,7 +21,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QMessageBox>
-#include <ctime>    // for srand(time(0))
+#include <ctime>    // srand(time(0))
 #include <QSound>
 #include <QLabel>
 #include "losewindow.h"
@@ -29,6 +29,12 @@
 #include "scorewindow.h"
 using namespace std;
 
+/**
+ * @brief The Desk class
+ * Main game widget class. The array of cells is created
+ * and randomly filled here. Also loaded win/lose and
+ * swipe sounds.
+ */
 class Desk : public QWidget {
     Q_OBJECT
 private:
@@ -42,14 +48,14 @@ private:
     uint    m_nScore;
     bool    m_bIsWon;
     bool    m_isMoved;
-
-    std::mt19937       eng;
+    mt19937 eng;
 
 protected:
     /*
-     * Если не было сдвигов тайлов или слияния тайлов,
-     * bIsRand = false ,
-     * Значит не будет анимации сдвига и воспроизведения звука тайлов
+     * If there was no cell moves or cell merge
+     * bIsRand = false
+     * That means that animations and sounds
+     * will not start for this move
      */
     virtual void keyPressEvent(QKeyEvent* pe) {
         bool bIsRand = false;
@@ -89,7 +95,7 @@ protected:
         }
     }
 
-    // подгоняет размер шрифтов при изменении размеров окна
+    /* Font size will be changed if window is resized */
     virtual void resizeEvent(QResizeEvent*) {
         QFont font = m_plbl->font();
         font.setFamily("poor richard");
@@ -102,7 +108,10 @@ protected:
 public:
     Desk(QWidget* pwgt = 0)
         : QWidget(pwgt),
-          m_scoreFile(new QFile(QApplication::applicationDirPath() + "\\scores.xml")),
+          m_scoreFile(new QFile(QApplication::applicationDirPath() +
+                                QDir::separator()
+                                + "scores.xml")
+                      ),
           m_nScore(0),
           m_bIsWon(false) {
 
@@ -110,9 +119,9 @@ public:
         font.setBold(true);
         font.setPointSize(15);
 
-        m_psnd      = new QSound(":/sounds/res/sound/snd1.wav");
-        m_psndLose  = new QSound(":/sounds/res/sound/lose.wav");
-        m_psndWin   = new QSound(":/sounds/res/sound/win.wav");
+        m_psnd      = new QSound(":/res/sound/snd1.wav");
+        m_psndLose  = new QSound(":/res/sound/lose.wav");
+        m_psndWin   = new QSound(":/res/sound/win.wav");
         m_plbl      = new QLabel("SCORE: ");
         m_plbl->setMargin(0);
         m_plblScore = new QLabel(QString::number(m_nScore));
@@ -126,7 +135,6 @@ public:
         phbl->setSpacing(0);
         phbl->setMargin(0);
 
-        qDebug() << "constructor called";
         init();
         QGridLayout* pgl = new QGridLayout;
         pgl->addLayout(phbl, 0, 0, 1, 4, Qt::AlignTop | Qt::AlignHCenter);
@@ -161,7 +169,10 @@ public:
 
     }
 
-    /* Добавляет очки */
+    /**
+     * @brief addScore - method adds scores
+     * @param score    - score to add
+     */
     void addScore(uint score) {
         m_nScore += score;
         qDebug() << "m_nScore is: " << QString::number(m_nScore);
@@ -174,18 +185,20 @@ public:
         m_plblScore->setText(QString::number(m_nScore));
     }
 
+    /**
+     * @brief init - First desk initialization
+     */
     void init(void) {
-
         for(int i = 0; i < 4; ++i) {
             for(int j = 0; j < 4; ++j) {
                 m_arrCell[i][j].setNumber(0);
             }
         }
         uint x = 0;
-        /* Рандом */
+        /* Random distribution from 0 to 3 */
         std::uniform_int_distribution<int> distr(0, 3);
 
-        /* Выбирает две случайные ячейки и заливает туда 2 */
+        /* Fills two random cells by value 2 */
         for(int i = 0; i < 4; ++i) {
             for(int j = 0; j < 4; ++j) {
                 if(m_arrCell[i][j].getNumber() != 0)
@@ -199,9 +212,14 @@ public:
         qDebug() << "init called";
     }
 
-    /* Рандомно втыкает в одну из нулевых ячеек 2 или 4 */
+    /**
+     * @brief randCell - fills cells by random 2 or 4 values
+     * @return true if successfully filled cell with
+     *         random 2 or 4 value, otherwise returns
+     *         false
+     */
     bool randCell(void) {
-        // проверка на заполненность всех ячеек:
+        // all cells filled check:
         bool bIsFilled = true;
         for(int i = 0; i < 4; ++i) {
             for(int j = 0; j < 4; ++j) {
@@ -263,11 +281,10 @@ public:
         return true;
     }
 
-    /*
-    Алгоритм сдвига значений ячеек:
-    вниз:
-      все ячейки столбца сдвигаются на 1 ниже (кроме последней), если там НЕ пусто
-    */
+    /**
+     * @brief upMove - move cells to left algorithm
+     * @return       - true if moved, otherwise false
+     */
     bool upMove() {
         bool isMovedOrMerged = false;
         for(int i = 0; i < 4; ++i) {
@@ -434,7 +451,10 @@ public:
     }
 
 public slots:
-    /*см метод в cell.h*/
+    /**
+     * @brief slotMoveTile - moves every cell to the side 'm' (animation)
+     * @param m            - side to move cells
+     */
     void slotMoveTile(Move m)
     {
         qDebug() << "slotMoveTile called";
@@ -471,6 +491,11 @@ public slots:
         }
     }
 
+    /**
+     * @brief slotNewGame - method writes new record to the .xml file
+     *                      and restarts the game.
+     * @param player      - player's name from signal
+     */
     void slotNewGame(QString player) {
        ScoreWindow* pScoreWnd = new ScoreWindow(*m_scoreFile, player, QString::number(m_nScore));
        delete pScoreWnd;
@@ -503,6 +528,9 @@ public slots:
         }
     }
 
+    /**
+     * @brief winCheck - checks if any cell contains 2048 value
+     */
     void winCheck() {
         for(int i = 0; i < 4; ++i) {
             for(int j = 0; j < 4; ++j) {
