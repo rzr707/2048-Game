@@ -1,4 +1,4 @@
-<-- this file must me in folder with compiled .exe -->
+<!-- this file must me in folder with compiled .exe -->
 <?xml version="1.0" encoding="UTF-8"?>
 <scores>
     <player name="Computer1" score="500"/>
