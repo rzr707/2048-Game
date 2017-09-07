@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scores>
-    <player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-    <player name="Ivan" score="1500"/>
-    <player name="Jeka" score="2500"/>
-    <player name="Vasya" score="5000"/>
-    <player name="Ivan" score="1500"/>
-    <player name="Jeka" score="2500"/>
-    <player name="Vasya" score="5000"/>
-<player name="test" score="100500"/>
-<player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-    <player name="test" score="100500"/>
-<player name="test" score="100500"/>
-<player name="test" score="100500"/>
+    <player name="Computer1" score="500"/>
+    <player name="Computer2" score="1500"/>
+    <player name="Computer3" score="2000"/>
 </scores>
